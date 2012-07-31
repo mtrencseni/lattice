@@ -6,32 +6,43 @@
 #include <stdlib.h>
 #include <math.h>
 
-// the lattice is of dimensions SIZE**4
-#define T_SIZE      (20)
+#define T_SIZE      (40)
 #define S_SIZE      (10)
 #define ITER_MIN    (0)
 #define ITER_MAX    (T_SIZE)
 int link[T_SIZE][S_SIZE][S_SIZE][S_SIZE][4]; // last index gives link direction
 double scale_factor[T_SIZE]; // a(t)
+double slice_normalization[T_SIZE];
 double normalization;
 
 double a_radiation(double t) // a(t) ~ t^(1/2)
 {
+    // basic plot
     if (t < T_SIZE/2)
-        return sqrt(1.0 + t/16.0);
+       return sqrt(1.0 + t/16.0);
     else
         return sqrt(1.0 + (T_SIZE - t)/16.0);
+
+    // high res plot
+    // return sqrt(1.0 + t/(8*16.0));
 }
 
-// double a_matter(double t) // a(t) ~ t^(2/3)
-// {
-//     return pow(1 + t/8.0, 2.0/3.0);
-// }
-// 
-// double a_lambda(double t) // a(t) ~ exp(t)
-// {
-//     return exp(1 + t/14);
-// }
+double a_matter(double t) // a(t) ~ t^(2/3)
+{
+    if (t < T_SIZE/2)
+        return pow(1 + t/16.0, 2.0/3.0);
+    else
+        return pow(1 + (T_SIZE - t)/16.0, 2.0/3.0);
+}
+
+double a_lambda(double t) // a(t) ~ exp(t)
+{
+    if (t < T_SIZE/2)
+        return exp(1 + t/16.0);
+    else
+        return exp(1 + (T_SIZE - t)/16.0);
+        
+}
 
 double a_minkowski(double t)
 {
@@ -131,7 +142,7 @@ void calc_normalization()
 {
     int	   x[4];
     int    u, v;
-	double action, staplesum;
+	double slice_action, action, staplesum;
     double a, gfactors;
 
     // do a Monte Carlo sweep; return energy
@@ -141,6 +152,7 @@ void calc_normalization()
 	for (x[0] = ITER_MIN; x[0] < ITER_MAX; x[0]++)
 	{
         a = scale_factor[x[0]]/scale_factor[0];
+        slice_action = 0.0;
     	for (x[1] = 0; x[1] < S_SIZE; x[1]++)
     	{
         	for (x[2] = 0; x[2] < S_SIZE; x[2]++)
@@ -159,12 +171,14 @@ void calc_normalization()
                             else
                                 gfactors = a*a*a*a*a*a*a;   // a(t)^7
                             
-                            normalization += 2 * gfactors;
+                            slice_action += 2 * gfactors;
                         }
                     }
                 }
             }
         }
+        slice_normalization[x[0]] = slice_action;
+        normalization += slice_action;
 	}
 }
 
@@ -172,6 +186,7 @@ double update(double beta)
 {
 	int	   x[4];
     int    u, v;
+    double beta_eff;
 	double staple, staplesum;	
 	double bplus, bminus, p;
 	double action;
@@ -179,10 +194,13 @@ double update(double beta)
 
     // do a Monte Carlo sweep; return energy
 
+    beta_eff = beta;
 	action = 0.0;
 
 	for (x[0] = ITER_MIN; x[0] < ITER_MAX; x[0]++)
 	{
+        a = a_matter(x[0]) / a_matter(0);
+        beta_eff = beta * (a*a*a*a*a + a*a*a*a*a*a*a) / 2.0;
         a = scale_factor[x[0]]/scale_factor[0];
     	for (x[1] = 0; x[1] < S_SIZE; x[1]++)
     	{
@@ -233,7 +251,7 @@ double update(double beta)
                     	}
                 	
                         // calculate the Boltzmann weight
-                        bplus = exp(beta * staplesum);
+                        bplus = exp(beta_eff * staplesum);
                         bminus = 1 / bplus;
                         p = bplus / (bplus + bminus);
                         // printf("b+: %f\t", bplus);
@@ -256,46 +274,11 @@ double update(double beta)
     	}
     }
     
-	//action /= (SIZE*SIZE*SIZE*SIZE*4*6);
     action /= normalization;
-	return 1.0 - action;
+	return action;
 }
 
-void heatcycle(double max, double dbeta, int num)
-{
-    double beta, action;
-    int i;
-
-    // heat it up
-    for (beta = max; beta > 0.0; beta -= dbeta)
-    {
-        for (i = 0; i < num; i++)
-            action = update(beta);
-        printf("%g\t%f\n", beta, action); 
-    }
-    
-    // cool it down
-    for (beta = 0.0; beta < max; beta += dbeta)
-    {
-        for (i = 0; i < num; i++)
-            action = update(beta);
-        printf("%g\t%f\n", beta, action); 
-    }
-}
-
-void betarun(double beta, int num)
-{
-    double action;
-    int i;
-
-    for (i = 0; i < num; i++)
-    {
-        action = update(beta);
-        printf("%i\t%f\n", i, action);
-    }
-}
-
-void print_lattice()
+void print_lattice(double beta)
 {
     int x[4];
     int u, v;
@@ -303,6 +286,10 @@ void print_lattice()
     int num_plus;
     int num_minus;
     double a, staple, staplesum, gfactors, action, sum_action;
+    int slike, tlike;
+    
+    slike = 0;
+    tlike = 0;
     
     sum_action = 0.0;
     for (x[0] = ITER_MIN; x[0] < ITER_MAX; x[0]++)
@@ -334,6 +321,11 @@ void print_lattice()
                                 gfactors = a*a*a*a*a;       // a(t)^5
                             else
                                 gfactors = a*a*a*a*a*a*a;   // a(t)^7
+
+                            if (u == 0 || v == 0)
+                                tlike++;
+                            else
+                                slike++;
 
                             /*  move around:
                         	               6--5
@@ -369,24 +361,80 @@ void print_lattice()
     	    }
 	    }
         sum_action += action;
-        printf("t: %d\ta: %f\taction: %f\tsum_action: %f\t+: %d\t-: %d\n", x[0], a, action/normalization, sum_action/normalization, num_plus, num_minus);
+        printf("%d %f %f\n",
+         x[0], beta, action/slice_normalization[x[0]]);
     }
-    printf("normalization: %f\n", normalization);
+}
+
+void heatcycle(double max, double dbeta, int num)
+{
+    double beta, action;
+    int i;
+
+    // heat it up
+    for (beta = max; beta > 0.0; beta -= dbeta)
+    {
+        for (i = 0; i < num; i++)
+            action = update(beta);
+        printf("%g\t%f\n", beta, action); 
+    }
+    
+    // cool it down
+    // for (beta = 0.0; beta < max; beta += dbeta)
+    // {
+    //     for (i = 0; i < num; i++)
+    //         action = update(beta);
+    //     printf("%g\t%f\n", beta, action); 
+    // }
+}
+
+void betarun(double beta, int num)
+{
+    int     i;
+    double  action;
+
+    for (i = 0; i < num; i++)
+    {
+        action = update(beta);
+        //printf("%i\t%f\n", i, action);
+    }    
+}
+
+void betaruns(double min, double max, double dbeta, int num)
+{
+    double beta;
+    
+    for (beta = min; beta <= max; beta += dbeta)
+    {
+        betarun(beta, num);
+        print_lattice(beta);
+    }
+    
+    /*
+    gnuplot heatmap from x y z lines:
+     set term x11
+     set title "Normalized action per spacelike slice for different betas"
+     set xlabel "Time"
+     set ylabel "Beta"
+     set palette defined (0 "blue", 1 "red")
+     splot "3d.dat"
+     plot "3dmat.dat" u ($1+0.5):($2+0.0125):($3) w points pt 5 ps 4 palette
+     plot "3drad_hires.dat" u ($1+0.5):($2+0.00125):($3) w points pt 5 ps 4 palette
+    */
 }
 
 int main()
 {
-    srand48(1235L);
+    srand48(12357L);
 
-    //calc_scale_factor(a_minkowski);
-    calc_scale_factor(a_radiation);
+    calc_scale_factor(a_minkowski);
+    //calc_scale_factor(a_matter);
     calc_normalization();
 
     //init_unity();
     init_rand();
-    heatcycle(1.0, 0.01, 1);
+    //heatcycle(1.0, 0.01, 10);
 
-    //print_lattice();
-    //betarun(0.2, 10);
-    //print_lattice();
+    betaruns(0, 1, 0.025, 100); // basic plot, has some numerical problems probably due to random
+    //betaruns(0.25, 0.35, 0.0025, 100); // high res plot for radiation case
 }
