@@ -1,0 +1,109 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      3010,         99]
+NotebookOptionsPosition[      2683,         83]
+NotebookOutlinePosition[      3028,         98]
+CellTagsIndexPosition[      2985,         95]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Rad", "=", 
+   RowBox[{"ReadList", "[", 
+    RowBox[{"\"\<d:/lattice/data/rad_hires.dat\>\"", ",", 
+     RowBox[{"{", 
+      RowBox[{"Number", ",", "Number", ",", " ", "Number"}], "}"}]}], "]"}]}],
+   ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"RadEff", "=", 
+   RowBox[{"ReadList", "[", 
+    RowBox[{"\"\<d:/lattice/data/radeff_hires.dat\>\"", ",", 
+     RowBox[{"{", 
+      RowBox[{"Number", ",", "Number", ",", " ", "Number"}], "}"}]}], "]"}]}],
+   ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Diff", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Do", "[", 
+   RowBox[{
+    RowBox[{"Diff", "=", 
+     RowBox[{"Append", "[", 
+      RowBox[{"Diff", ",", "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Rad", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "[", 
+          RowBox[{"[", "1", "]"}], "]"}], ",", 
+         RowBox[{
+          RowBox[{"Rad", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}], ",", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"Rad", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", 
+           RowBox[{"[", "3", "]"}], "]"}], "-", 
+          RowBox[{
+           RowBox[{"RadEff", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", 
+           RowBox[{"[", "3", "]"}], "]"}]}]}], "}"}]}], "]"}]}], 
+    "\[IndentingNewLine]", ",", 
+    RowBox[{"{", 
+     RowBox[{"i", ",", 
+      RowBox[{"Length", "[", "Rad", "]"}]}], "}"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<d:/lattice/data/diffrad_hires.dat\>\"", ",", " ", "Diff"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.5528233878382893`*^9, 3.552823457617281*^9}, {
+  3.5529174863382463`*^9, 3.5529174936346636`*^9}, {3.552967657416641*^9, 
+  3.5529676660311337`*^9}},
+ FontWeight->"Plain"],
+
+Cell[BoxData["\<\"d:/lattice/data/diffrad_hires.dat\"\>"], "Output",
+ CellChangeTimes->{3.552917494343704*^9, 3.552917825531647*^9, 
+  3.55296766700619*^9, 3.552968658832919*^9}]
+}, Open  ]]
+},
+WindowSize->{944, 581},
+WindowMargins->{{48, Automatic}, {Automatic, 11}},
+FrontEndVersion->"7.0 for Microsoft Windows (64-bit) (February 18, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 1919, 54, 145, "Input"],
+Cell[2489, 78, 178, 2, 30, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
