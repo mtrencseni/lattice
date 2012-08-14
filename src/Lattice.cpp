@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define T_SIZE      (30)
+#define T_SIZE      (20)
 #define S_SIZE      (20)
 #define ITER_MIN    (0)
 #define ITER_MAX    (T_SIZE)
@@ -41,14 +41,21 @@ double beta_eff(double beta, int t)
 
 double a_radiation(double t) // a(t) ~ t^(1/2)
 {
-    // basic plot
-    /*if (t < T_SIZE/2)
+    //// basic plot
+    if (t < T_SIZE/2)
        return sqrt(1.0 + t/16.0);
     else
-        return sqrt(1.0 + (T_SIZE - t)/16.0);*/
+        return sqrt(1.0 + (T_SIZE - t)/16.0);
+
+    // fixed beta plot
+    //if (t < T_SIZE/2)
+    //   return sqrt(1.0 + t/160.0);
+    //else
+    //    return sqrt(1.0 + (T_SIZE - t)/160.0);
+
 
     // high res plot
-    return sqrt(1.0 + t/(8*16.0));
+    //return sqrt(1.0 + t/(8*16.0));
 }
 
 double a_matter(double t) // a(t) ~ t^(2/3)
@@ -281,15 +288,15 @@ double update(double beta)
     }
     
     action /= normalization;
-    return action;
+    return 1.0 - action;
 }
 
 void print_lattice(double beta)
 {
     int x[4];
     int u, v;
-    double a, staple, staplesum, gfactors, action, sum_action;
-    sum_action = 0.0;
+    double a, staple, staplesum, gfactors, action;
+    double bplus, bminus, p;
     for (x[0] = ITER_MIN; x[0] < ITER_MAX; x[0]++)
     {
         a = scale_factor[x[0]]/scale_factor[0];
@@ -342,14 +349,34 @@ void print_lattice(double beta)
                             //staple *= link[x[0]][x[1]][x[2]][x[3]][u]; /* 14 */
                             staplesum += staple * gfactors;
                         }
-                        action += fabs(staplesum);
+
+                        //action += fabs(staplesum);
+                        
+                        // calculate the Boltzmann weight
+                        bplus = exp(beta_func(beta, x[0]) * staplesum);
+                        bminus = 1 / bplus;
+                        p = bplus / (bplus + bminus);
+                        // the heatbath algorithm
+                        if ( rnd() < p )
+                        {
+                            //link[x[0]][x[1]][x[2]][x[3]][u] = 1;
+                            action += staplesum;
+                        }
+                        else
+                        {
+                            //link[x[0]][x[1]][x[2]][x[3]][u] = -1;
+                            action -= staplesum;
+                        }
                     }
                 }
             }
         }
-        sum_action += action;
-        printf("%d %f %f\n",
-         x[0], beta, action/slice_normalization[x[0]]);
+//        action = 1.0 - action;
+        if (x[0] < T_SIZE/2)
+        {
+            printf("%d %f %f\n",
+             x[0], beta, action/slice_normalization[x[0]]);
+        }
     }
 }
 
@@ -401,28 +428,119 @@ void betaruns(double min, double max, double dbeta, int num, void(*lattice_init_
 
 int main()
 {
+
+//#define EFFECTIVE
+#define COSMOLOGY a_radiation
+
+#ifdef EFFECTIVE
     calc_scale_factor(a_minkowski);
     calc_normalization();
-    a_func_eff = a_radiation;
+    a_func_eff = COSMOLOGY;
     beta_func = beta_eff;
+#else
+    calc_scale_factor(COSMOLOGY);
+    calc_normalization();
+    beta_func = beta_normal;
+#endif
 
-    //heatcycle(1.0, 0.01, 10);
-
-    //betaruns(0.15, 0.15, 1, 10, init_unity);
-    //betaruns(0, 0.5, 0.025, 10, init_unity);
-    betaruns(0.25, 0.35, 0.0025, 10, init_unity); // high res plot for radiation case
+    betaruns(0, 0.5, 0.025, 10, init_unity);
+    //betaruns(0.25, 0.25, 1, 10, init_unity);
+    //betaruns(0.25, 0.35, 0.0025, 10, init_unity); // high res plot for radiation case
 }
 
 /*
 gnuplot heatmap from x y z lines:
 
-set term x11
-set title "Normalized action per spacelike slice for different betas"
-set xlabel "Time"
-set ylabel "Beta"
-set palette defined (0 "blue", 1 "red")
-splot "3d.dat"
-plot "3dmat.dat" u ($1+0.5):($2+0.0125):($3) w image
-plot "3drad_hires.dat" u ($1+0.5):($2+0.00125):($3) w image
+set tics out
+set xrange[0:10]
+set yrange[0:0.5]
+set xlabel "t"
+set ylabel "$\\beta$"
+set cbrange[0:1]
+set palette defined (0 "black", 1 "white")
+
+set term windows
+set title "(a) radiation"
+plot "d:/lattice/data/rad.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/(sqrt(1+x/16)**5+sqrt(1+x/16)**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/rad.gif"
+replot
+set term epslatex
+set output "d:/lattice/data/rad.tex"
+replot
+
+set term windows
+set title "(b) matter"
+plot "d:/lattice/data/mat.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/(((1+x/16)**(0.66))**5+((1+x/16)**(0.66))**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/mat.gif"
+replot
+set term epslatex
+set output "d:/lattice/data/mat.tex"
+replot
+
+
+set term windows
+set title "(c) lambda"
+plot "d:/lattice/data/lam.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/((exp(1+x/16)/exp(1))**5+(exp(1+x/16)/exp(1))**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/lam.gif"
+replot
+
+DIFFERENCE PLOTS:
+
+set palette defined (0 "white", 0.1 "black")
+set cbrange[0:0.1]
+
+set term windows
+set title "(a) radiation"
+plot "d:/lattice/data/diffrad.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/(sqrt(1+x/16)**5+sqrt(1+x/16)**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/diffrad.gif"
+replot
+set term epslatex color
+set output "d:/lattice/data/diffrad.tex"
+replot
+
+set term windows
+set title "(b) matter"
+plot "d:/lattice/data/diffmat.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/(((1+x/16)**(0.66))**5+((1+x/16)**(0.66))**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/diffmat.gif"
+replot
+set term epslatex color
+set output "d:/lattice/data/diffmat.tex"
+replot
+
+set term windows
+set title "(c) lambda"
+plot "d:/lattice/data/difflam.dat" u ($1+0.5):($2+0.0125):($3) w image title "", 0.88/((exp(1+x/16)/exp(1))**5+(exp(1+x/16)/exp(1))**7) linecolor rgb "black" lw 4 title ""
+set term gif
+set output "d:/lattice/data/difflam.gif"
+replot
+set term epslatex color
+set output "d:/lattice/data/difflam.tex"
+replot
+
+
+FIXED BETA:
+
+set tics out
+set xlabel "t"
+set ylabel "E"
+
+set term windows
+set title ""
+set xrange[0:5]
+set yrange[0:1.2]
+plot "d:/lattice/data/rad_beta025.dat" u ($1)/10:($3) linecolor rgb "black" pt 1 title "", "d:/lattice/data/radeff_beta025.dat" u ($1)/10:($3) linecolor rgb "black" pt 4 title ""
+set term gif
+set output "d:/lattice/data/rad_beta025.gif"
+replot
+set term epslatex
+set output "d:/lattice/data/rad_beta025.tex"
+replot
+
+TODO: show convergence for iterations
 
 */
