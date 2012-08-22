@@ -30,6 +30,15 @@
     <ClInclude Include="..\src\mersenne\Randomc.h">
       <Filter>Source Files\Mersenne</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Ini.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IniParse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,6 +48,12 @@
       <Filter>Source Files\Mersenne</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Lattice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\z2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Ini.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
