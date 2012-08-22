@@ -1,0 +1,1 @@
+for /f %%f in ('dir /b scripts\*.ini') do bin\lattice scripts\%%f
