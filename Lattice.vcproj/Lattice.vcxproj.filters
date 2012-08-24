@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Mersenne">
       <UniqueIdentifier>{6ad2347f-30f9-4920-bfb8-e4e2dcdcd260}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SimpleIni">
+      <UniqueIdentifier>{e560dc08-a583-4fc2-9eac-7197ff25e40d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SimpleIni">
+      <UniqueIdentifier>{45948017-4706-49ab-a1bd-2258c01174e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -30,13 +36,19 @@
     <ClInclude Include="..\src\mersenne\Randomc.h">
       <Filter>Source Files\Mersenne</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Ini.h">
+    <ClInclude Include="..\src\Cosmology.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Globals.h">
+    <ClInclude Include="..\src\Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IniParse.h">
+    <ClInclude Include="..\src\simpleini\ConvertUTF.h">
+      <Filter>Header Files\SimpleIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\simpleini\SimpleIni.h">
+      <Filter>Header Files\SimpleIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lattice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,13 +59,16 @@
     <ClCompile Include="..\src\mersenne\Mersenne.cpp">
       <Filter>Source Files\Mersenne</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Lattice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\z2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Ini.c">
+    <ClCompile Include="..\src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\simpleini\ConvertUTF.c">
+      <Filter>Source Files\SimpleIni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lattice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

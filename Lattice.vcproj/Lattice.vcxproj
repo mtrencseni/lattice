@@ -39,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)\..\bin</OutDir>
+    <OutDir>$(SolutionDir)\..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -79,17 +79,20 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Globals.h" />
-    <ClInclude Include="..\src\Ini.h" />
-    <ClInclude Include="..\src\IniParse.h" />
+    <ClInclude Include="..\src\Configuration.h" />
+    <ClInclude Include="..\src\Cosmology.h" />
+    <ClInclude Include="..\src\Lattice.h" />
     <ClInclude Include="..\src\mersenne\Randomc.h" />
+    <ClInclude Include="..\src\simpleini\ConvertUTF.h" />
+    <ClInclude Include="..\src\simpleini\SimpleIni.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Ini.c" />
-    <ClCompile Include="..\src\mersenne\Mersenne.cpp" />
     <ClCompile Include="..\src\Lattice.cpp" />
+    <ClCompile Include="..\src\Main.cpp" />
+    <ClCompile Include="..\src\mersenne\Mersenne.cpp" />
+    <ClCompile Include="..\src\simpleini\ConvertUTF.c" />
     <ClCompile Include="..\src\z2.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

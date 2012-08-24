@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       145,          7]
-NotebookDataLength[     11322,        308]
-NotebookOptionsPosition[     10728,        283]
-NotebookOutlinePosition[     11073,        298]
-CellTagsIndexPosition[     11030,        295]
+NotebookDataLength[     11857,        322]
+NotebookOptionsPosition[     11191,        294]
+NotebookOutlinePosition[     11536,        309]
+CellTagsIndexPosition[     11493,        306]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -75,8 +75,11 @@ Cell[BoxData[{
  CellChangeTimes->{{3.5545660532935796`*^9, 3.5545660682384343`*^9}}],
 
 Cell[BoxData["\<\"d:/lattice/data/diff_radiation.dat\"\>"], "Output",
- CellChangeTimes->{3.5545660699515324`*^9}]
+ CellChangeTimes->{3.5545660699515324`*^9, 3.554566104984536*^9, 
+  3.5546125947868423`*^9, 3.5546189926347785`*^9}]
 }, Open  ]],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
@@ -131,6 +134,11 @@ Cell[BoxData[{
   RowBox[{"\"\<d:/lattice/data/diff_matter.dat\>\"", ",", " ", "Diff"}], 
   "]"}]}], "Input",
  CellChangeTimes->{{3.554566072695689*^9, 3.554566087518537*^9}}],
+
+Cell[BoxData["\<\"d:/lattice/data/diff_matter.dat\"\>"], "Output",
+ CellChangeTimes->{3.554566105037539*^9, 3.5546125948298445`*^9, 
+  3.5546189926697807`*^9}]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -202,7 +210,9 @@ Cell[BoxData["\<\"d:/lattice/data/diff_lambda.dat\"\>"], "Output",
   3.554032335655241*^9, 3.5540324355239525`*^9, 3.554032774037315*^9, 
    3.554033322009657*^9, {3.5540334704731483`*^9, 3.554033485847028*^9}, 
    3.5540335829935846`*^9, 3.5540348653609314`*^9, 3.5540354404978275`*^9, 
-   3.5540359984957433`*^9, 3.554566035380555*^9}]
+   3.5540359984957433`*^9, 3.554566035380555*^9, 3.554566105073541*^9, 
+   3.554608410099492*^9, 3.5546106192838497`*^9, 3.554612594854846*^9, 
+   3.5546189926947813`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -278,7 +288,8 @@ Cell[BoxData[
    3.554381509681219*^9, {3.5543815562228813`*^9, 3.554381578862176*^9}, {
    3.5544022571339054`*^9, 3.554402272453782*^9}, 3.5544687080453863`*^9, 
    3.5544717977181053`*^9, 3.5545435512305355`*^9, 3.5545435900837574`*^9, 
-   3.554565855356258*^9}]
+   3.554565855356258*^9, 3.554566105089542*^9, 3.554612594870847*^9, 
+   3.5546189927117825`*^9}]
 }, Open  ]]
 },
 WindowSize->{1904, 1065},
@@ -299,16 +310,19 @@ CellTagsIndex->{}
 Notebook[{
 Cell[CellGroupData[{
 Cell[567, 22, 1823, 52, 152, "Input"],
-Cell[2393, 76, 113, 1, 30, "Output"]
-}, Open  ]],
-Cell[2521, 80, 1810, 52, 152, "Input"],
-Cell[CellGroupData[{
-Cell[4356, 136, 2228, 61, 145, "Input"],
-Cell[6587, 199, 357, 5, 30, "Output"]
+Cell[2393, 76, 186, 2, 30, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6981, 209, 2339, 48, 72, "Input"],
-Cell[9323, 259, 1389, 21, 30, "Output"]
+Cell[2616, 83, 1810, 52, 152, "Input"],
+Cell[4429, 137, 159, 2, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4625, 144, 2228, 61, 145, "Input"],
+Cell[6856, 207, 479, 7, 30, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7372, 219, 2339, 48, 72, "Input"],
+Cell[9714, 269, 1461, 22, 30, "Output"]
 }, Open  ]]
 }
 ]
