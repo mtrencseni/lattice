@@ -1,12 +1,4 @@
-%%
-%%   This file is part of the APS files in the REVTeX 4 distribution.
-%%   Version 4.1r of REVTeX, August 2010
-%%
-%%
-%%   Copyright (c) 2001, 2009, 2010 The American Physical Society.
-%%
-%%   See the REVTeX 4 README file for restrictions and more information.
-%%
+
 \documentclass[aps,prl,twocolumn,groupedaddress,showpacs,showkeys]{revtex4-1}
 %\documentclass[aps,prl,preprint,superscriptaddress]{revtex4-1}
 %\documentclass[aps,prl,reprint,groupedaddress]{revtex4-1}
@@ -50,7 +42,7 @@ Lattice gauge theory, the study of gauge theories on discretized spacetimes is a
 
 These, and subsequent investigations that followed were carried out in Euclidean spacetime. In the context of this letter, it is instructive to think of Euclidean spacetime as a Wick rotated Minkowski spacetime, where Wick rotation is defined by the replacement $t  \rightarrow it$. Wick rotation is necessary to get rid of the imaginary exponent in the original path integral, to arrive at a theory which can be simulated effectively on a computer. But the results of the computational experiments describe the physics of gauge theories in Minkowski spacetime.
 
-Standard cosmological theory, confirmed recently the Wilkinson Microwave Anisotropy Probe \cite{WMAP7} and the Sloan Digital Sky Survey \cite{SDSS}, tells us that the Universe is expanding, not static. On cosmological scales the Universe is described by the spatially flat, homogeneous and isotropic Friedmann-Lemaitre-Robertson-Walker (FLRW) metric, which contains a scale factor $a(t)$ to describe the expansion of space with cosmological time.
+The parameters of standard cosmological theory were recently refined by the Wilkinson Microwave Anisotropy Probe \cite{WMAP7} and the Sloan Digital Sky Survey \cite{SDSS}. These measurements tell us that the Universe is not static but expanding, and on cosmological scales is best described by the spatially flat, homogeneous and isotropic Friedmann-Lemaitre-Robertson-Walker (FLRW) metric, which contains a scale factor $a(t)$ to describe the expansion of space with cosmological time.
 
 In this letter, I define pure lattice gauge theories on Euclidean FLRW metrics and present results of computational simulations using the simplest $Z_2$ Abelian model. These demonstrate that the presence of the scale factor introduces a spacelike domain wall inside the four dimensional spacetime lattice where the phase transition associated with deconfinement occurs. This indicates that even simple lattice gauge theory models extended with the scale factor $a(t)$ can qualitatively reproduce the electroweak phase transition of the early Universe.
 
@@ -104,7 +96,7 @@ In this Letter I work with three source types commonly considered in cosmology: 
 \end{ruledtabular}
 \end{table}
 
-The simulations are carried out on a $40 \times 20^3$ hypercubic lattice using periodic boundary conditions. I let the spacetime expand until $T_h = 20$ and then symmetrically contract it back by setting $a(T_h + t) = a(T_h - t)$ so that it can be wrapped onto itself at $T = 40$. This gives an effective lattice size of $20^4$, as the thermodynamic quantities of the two halves are mirror images of each other. Only the first, expanding half is shown in the following figures.
+The simulations are carried out on a $40 \times 20^3$ hypercubic lattice using periodic boundary conditions. I let the spacetime expand until $T_h = 20$ and then symmetrically contract it back by setting $a(T_h + t) = a(T_h - t)$ so that it can be wrapped onto itself at $T = 40$. This gives an effective lattice size of $20^4$, as the thermodynamic quantities of the two halves are mirror images of each other. Only the first, expanding half is shown in the following figures. The simulations are run using a rescaled $t$ parameter $t \rightarrow 1 + t / 32 $ to ensure that the phase transition can be tracked for all source types considered.
 
 I run simulations using different $\beta$s, starting at $\beta = 0$ to $\beta = 0.5$ at $ \Delta \beta = 0.025 $ intervals. Before each $\beta$-run, the lattice is initialized to $U_{ij}$ = 1. I experimented with different initialization strategies, such as completely disordered states, but these did not affect the overall results. For each $\beta$-run, the entire lattice is updated 100 times using the Monte Carlo heat bath algorithm, a value which was found to give good convergence results. The size of the lattice, $\beta$-resolution and number of Monte Carlo iterations used is only limited by computational resources. Comparing my results with past results \cite{CreutzAbelian} shows that these values are sufficient for good convergence and understanding the thermodynamic properties of the system. With these values, a simulation run takes a few minutes on a standard desktop computer.
 
